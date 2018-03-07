@@ -116,11 +116,9 @@ class Player(pygame.sprite.Sprite):
         walk horizontally
         """
         self.iswalk = True
-        self.cur_speed = self.speed
 
     def jump(self):
         self.isjump = True
-        self.cur_speed = self.speed
 
     def stand(self):
         self.iswalk = False
@@ -135,14 +133,15 @@ class Player(pygame.sprite.Sprite):
 
             if self.iswalk:
                 self.rect.move_ip((self.speed, 0))
+                self.cur_speed = self.speed
             else:
                 self.cur_speed = 0
 
             if self.isjump:
                 if self.v > 0:
-                    F = ( 0.5 * self.m * (self.v*self.v) )
+                    F = (0.5 * self.m * (self.v*self.v))
                 else:
-                    F = -( 0.5 * self.m * (self.v*self.v) )
+                    F = -(0.5 * self.m * (self.v*self.v))
 
                 self.rect.move_ip((self.speed, -F))
                 self.image = self.jump_image
@@ -198,7 +197,6 @@ def main():
 
     running = True
     while running:
-    #while player.alive():
         clock.tick(40)
         bgm.play(-1)
 
@@ -219,7 +217,6 @@ def main():
         #    bgm.stop()
 
         # For scrolling
-        #player_posX = player.rect.left
         player_posX += player.cur_speed
         if player_posX > stage_width - player_box_width:
             player_posX = stage_width - player_box_width
@@ -239,7 +236,6 @@ def main():
             screen.blit(bg, (rel_x, 0))
 
         #Draw Everything
-        #screen.blit(bg, (-player_box_posX, 0))
         allsprites.draw(screen)
         screen.blit(text, textpos)
         pygame.display.flip()
