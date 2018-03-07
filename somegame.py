@@ -49,8 +49,8 @@ def load_sound(name):
         print ('Cannot load sound: %s' % fullname)
         raise SystemExit(str(geterror()))
     return sound
-    
-    
+
+
 # Constants and initialization
 black = (0,0,0)
 white = (255, 255, 255)
@@ -114,14 +114,14 @@ class Player(pygame.sprite.Sprite):
     def walk(self):
         """
         walk horizontally
-        """ 
-        self.iswalk = True 
-        self.cur_speed = self.speed      
+        """
+        self.iswalk = True
+        self.cur_speed = self.speed
 
-    def jump(self):        
+    def jump(self):
         self.isjump = True
         self.cur_speed = self.speed
-        
+
     def stand(self):
         self.iswalk = False
 
@@ -131,13 +131,13 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         global player_box_posX
         if self.alive():
-            self.rect.left = player_box_posX                
-            
-            if self.iswalk:               
+            self.rect.left = player_box_posX
+
+            if self.iswalk:
                 self.rect.move_ip((self.speed, 0))
             else:
                 self.cur_speed = 0
-            
+
             if self.isjump:
                 if self.v > 0:
                     F = ( 0.5 * self.m * (self.v*self.v) )
@@ -153,10 +153,10 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.bottom >= ground_y:
                     self.rect.bottom = ground_y
                     self.isjump = False
-                    self.iswalk = False                    
+                    self.iswalk = False
                     self.image = self.stand_image
                     self.v = velocity
-            
+
             player_box_posX = self.rect.left
 
 
@@ -168,9 +168,16 @@ def main():
 
     # create background
     bg, bg_rect = load_image('level_large.jpg')
-    bg_width, bg_height = bg_rect.size    
+    bg_width, bg_height = bg_rect.size
     screen.blit(bg, (0, 0))
-    # display background   
+
+    if pygame.font:
+        font = pygame.font.Font(None, 36)
+        text = font.render("MARIO GO", 1, darkgrey)
+        textpos = text.get_rect(centerx=window_width/2)
+        screen.blit(text, textpos)
+
+    # display background
     pygame.display.flip()
 
     # prepare game objects
@@ -186,7 +193,7 @@ def main():
     stage_posX = 0
     half_window_width = window_width / 2
     start_scrolling_pos = half_window_width
-    player_posX = player_box_posX 
+    player_posX = player_box_posX
     player_box_width = player.rect.width
 
     running = True
@@ -206,11 +213,11 @@ def main():
                 player.stand()
 
         allsprites.update()
-        
+
         # if player.rect.colliderect(goomba.rect):
         #    player.kill()
         #    bgm.stop()
-        
+
         # For scrolling
         player_posX = player.rect.left
         if player_posX > stage_width - player_box_width:
@@ -224,15 +231,16 @@ def main():
         else:
             player_box_posX = start_scrolling_pos
             stage_posX -= player.cur_speed
-        
+
         rel_x = stage_posX % bg_width
         screen.blit(bg, (rel_x - bg_width, 0))
         if rel_x < window_width:
-            screen.blit(bg, (rel_x, 0))        
+            screen.blit(bg, (rel_x, 0))
 
         #Draw Everything
         #screen.blit(bg, (-player_box_posX, 0))
         allsprites.draw(screen)
+        screen.blit(text, textpos)
         pygame.display.flip()
 
     bgm.stop()
