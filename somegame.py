@@ -219,7 +219,8 @@ def main():
         #    bgm.stop()
 
         # For scrolling
-        player_posX = player.rect.left
+        #player_posX = player.rect.left
+        player_posX += player.cur_speed
         if player_posX > stage_width - player_box_width:
             player_posX = stage_width - player_box_width
         if player_posX < 0:
