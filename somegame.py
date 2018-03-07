@@ -76,7 +76,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.image_l
         self.rect.bottomleft = (window_width, ground_y)
         self.status = 1
-        self.speed = -2
+        self.speed = -4
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
